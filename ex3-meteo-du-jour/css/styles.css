@@ -1,0 +1,233 @@
+/* Normalisation supplémentaire 
+=============================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Styles de base
+=============================================== */
+html {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%; /* Éviter la barre de défilement horizontale */
+    /* Ajustement de la taille de base du texte à la racine du document */
+    font-size: clamp(14px, 0.75rem + 1vw, 22px);
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    padding: 0rem;
+}
+
+h1 {
+    text-shadow: 1px 1px 2px #aaa;
+    margin: 0.67rem 0;
+}
+
+section {
+    margin-top: 1rem;
+    border-top: 1px solid darkgrey;
+    border-bottom: 1px solid darkgrey;
+}
+
+/* Un peu de padding à gauche pour les enfants de l'entête mais *pas* pour l'image */
+header > *:not(picture) {
+    padding-left: 2.5vw;
+}
+
+picture {
+    width: 100vw;
+    /* 
+        La propriété qui suit est importante pour les 2 raisons suivantes : 
+            1) ne pas avoir de barre de défilement horizontale ; 
+            2) garder l'image centrée. 
+    */
+    max-width: min(100%, 1920px); /* On veut que l'image couvre la largeur entière du viewport, mais pas plus que 1920px (largeur réelle de notre plus grande image) */
+    margin: 0 auto; /* L'image sera centrée lorsque le viewport dépasse 1920px en largeur */
+}
+
+picture img {
+    width: 100%;
+}
+
+/* Classes CSS */
+
+.maximum,
+.minimum {
+    font-weight: bold;
+}
+
+.minimum {
+    color: darkgrey;
+}
+
+/* Pseudo-élément servant à 'décorer' les températures avec le symbole de 'degré' */
+.degre::after {
+    content: "\0000B0";
+}
+
+/* Images SVG des icônes représentants les conditions météo */
+.icone img {
+    display: inline-block;
+    width: 4.5rem;
+}
+
+/* Mise en page pour les petits périphériques
+=============================================== */
+
+body {
+    max-width: 100%;
+    height: 100%;
+    /* Affichage flex des enfants en colonne*/
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    /* Affichage flex des enfants en colonne*/
+    display: flex;
+    flex-direction: column;
+}
+
+.infos {
+    /* [À compléter : étape 1b] */
+    /* Attention: c'est un conteneur flex ET un élément flex. */
+    /* Affichage flex des enfants en rangée centré verticalement. */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.infos > div {
+    /* [À compléter : étape 1b] */
+    /* Tous ces items flex peuvent s'étirer, mais pas rétrécir. Leur taille n'est pas prise en compte dans le 
+        calcul de l'espace restant... */
+        flex: 1 0 0;
+}
+
+.infos > div:first-child {
+    display: flex;
+    align-items: center;
+}
+
+main {
+    width: 100%;
+    /* Contexte flex pour ses enfants en colonne */
+    display: flex;
+    flex-direction: column;
+}
+
+section {
+    /* Affichage flex des enfants en rangée */
+    display: flex;
+    /* Centrer les enfants verticalement */
+    align-items: center;
+    padding-left: 2.5vw;
+    padding-right: 2.5vw;
+}
+
+/* [À compléter : étape 1b] */
+/* Tous les enfants de section ont un flex-basis du tiers de la largeur de leur conteneur parent. 
+    Ils ne peuvent ni s'étirer, ni rétrécir... */
+    section>*{
+        flex: 0 0 33%;
+    }
+
+/* Tous les enfants des sections sauf le H3 */
+section > *:not(h3) {
+    text-align: right;
+}
+
+/* Styles pour les écrans plus larges
+=============================================== */
+
+/* Requête média pour les écrans de "taille moyenne" */
+@media screen and (min-width: 576px) {
+    section > .icone {
+        text-align: center;
+    }
+
+    .icone img {
+        width: 5rem;
+        /* Corrige les icones SVG (toutes) qui ont une empreinte trop grande pour leur contenu */
+        margin: -0.4rem 0;
+    }
+
+    /* [À compléter : étape 2] */
+    /* Les 2 enfants de .temperature sont affichés en rangée */
+    .temperature{
+        display: flex;
+        flex-direction: row;
+        
+        /*TEST PCQ PAS POSSIBLE D'ALIGNER COMPLÈTEMENT À DROITE*/
+        justify-content: flex-end;
+    }
+
+    /* [À compléter : étape 2] */
+    /* le contenu de .degre a un padding gauche de 0.5 rem */
+    .degre{
+        padding-left: 0.5rem;
+    }
+    
+}
+
+
+/* Requête média pour les écrans de "grande taille" */
+@media screen and (min-width: 992px) {
+    section {
+        padding: 0;
+    }
+
+    .icone img {
+        width: 6rem;
+        /* Corrige les icones SVG (toutes) qui ont une empreinte trop grande pour leur contenu */    
+        margin: -1rem 0;
+    }
+
+    /* Corrige les icones SVG (celle dans le tableau des températures) qui ont une empreinte trop grande pour leur contenu */
+    section .icone img {
+        margin-top: -2rem;
+    }
+
+    /* [À compléter : étape 2] */
+    /* Le conteneur "main" affiche ses enfants en rangée et avec un espacement entre chacun. */
+    /* En hauteur, il s'étire pour prendre tout l'espace restant */
+    main{
+        flex-direction: row;
+        justify-content: space-between;
+        flex: 1 1 auto;
+    }
+
+
+    /* [À compléter : étape 2] */
+    /* On ajoute une bordure grise en bas de l'élément de la classe .infos 
+        et l'espace est répartie *entre* ses items flex */
+        .infos{
+            border-bottom: solid gray 2px;
+            justify-content: space-evenly;
+        }
+    
+
+    /* [À compléter : étape 2] */
+    /* Les enfants de section sont désormais affichés en colonne. */
+    /* En tant qu'élément flex, chaque section doit pouvoir s'étirer ou rétrécir. */
+    /* Les bordures de chaque section en haut et en bas sont remplacées par une bordure droite. */
+    section{
+        flex-direction: column;
+        flex: 1 1 auto;
+        border-right: solid gray 1px;
+        border-top: none;
+        border-bottom: none;
+    }
+
+
+    /* [À compléter : étape 2] */
+    /* La dernière section n'a pas cette bordure à droite. */
+    section:nth-last-child(){
+        border-right: none;
+    }
+
+
+}
